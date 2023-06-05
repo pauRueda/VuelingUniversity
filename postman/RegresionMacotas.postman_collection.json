@@ -1,0 +1,903 @@
+{
+	"info": {
+		"_postman_id": "b56e3412-cfbd-4754-9d9b-854fac2c4b34",
+		"name": "RegresionMacotas",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24773452"
+	},
+	"item": [
+		{
+			"name": "TC1- Login tests",
+			"item": [
+				{
+					"name": "1.1 - Create and update user",
+					"item": [
+						{
+							"name": "Create User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"validateOK200(pm);\r",
+											"\r",
+											"console.log(pm.variables.get(\"nombreUsuario\"));\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": 40,\r\n  \"username\": \"{{nombreUsuario}}\",\r\n  \"firstName\": \"string\",\r\n  \"lastName\": \"string\",\r\n  \"email\": \"string\",\r\n  \"password\": \"string\",\r\n  \"phone\": \"6235214652\",\r\n  \"userStatus\": 0\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}user/",
+									"host": [
+										"{{URL}}user"
+									],
+									"path": [
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "validate user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"validateOK200(pm);\r",
+											"\r",
+											"validateName(pm.response);\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"validateName = function (data) {    \r",
+											"    let jsonData = data.json();\r",
+											"    console.log(jsonData.username);\r",
+											"    \r",
+											"  \r",
+											"    pm.test(\"Nombre usuario correcto\",() => {\r",
+											"         pm.expect(jsonData.username).to.eql(pm.variables.get(\"nombreUsuario\"));\r",
+											"    });\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}user/{{nombreUsuario}}",
+									"host": [
+										"{{URL}}user"
+									],
+									"path": [
+										"{{nombreUsuario}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"validateOK200(pm);\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": 40,\r\n  \"username\": \"{{nombreUsuario}}\",\r\n  \"firstName\": \"{{nombre}}\",\r\n  \"lastName\": \"{{lastName}}\",\r\n  \"email\": \"{{email}}\",\r\n  \"password\": \"{{pass}}\",\r\n  \"phone\": \"{{phone}}\",\r\n  \"userStatus\": 0\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}user/{{nombreUsuario}}",
+									"host": [
+										"{{URL}}user"
+									],
+									"path": [
+										"{{nombreUsuario}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "1.2 - Login and logout",
+					"item": [
+						{
+							"name": "login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"validateOK200(pm);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}user/login?username={{nombreUsuario}}&password={{password}}",
+									"host": [
+										"{{URL}}user"
+									],
+									"path": [
+										"login"
+									],
+									"query": [
+										{
+											"key": "username",
+											"value": "{{nombreUsuario}}"
+										},
+										{
+											"key": "password",
+											"value": "{{password}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Logout",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"validateOK200(pm);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}user/logout",
+									"host": [
+										"{{URL}}user"
+									],
+									"path": [
+										"logout"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "1.2 - Delete user",
+					"item": [
+						{
+							"name": "delete user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"validateOK200(pm);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}user/{{nombreUsuario}}",
+									"host": [
+										"{{URL}}user"
+									],
+									"path": [
+										"{{nombreUsuario}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get deleted user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"validateOK200(pm);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}user/{{nombreUsuario}}",
+									"host": [
+										"{{URL}}user"
+									],
+									"path": [
+										"{{nombreUsuario}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete a deleted user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"validateOK200(pm);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}user/{{nombreUsuario}}",
+									"host": [
+										"{{URL}}user"
+									],
+									"path": [
+										"{{nombreUsuario}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.collectionVariables.set(\"nombreUsuario\", \"pepe\");"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "TC 2 - Pet test",
+			"item": [
+				{
+					"name": "2.1 - Create and update pets",
+					"item": [
+						{
+							"name": "Create Pet",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"validateOK200(pm);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": \"{{idPet}}\",\r\n  \"category\": {\r\n    \"id\": 0,\r\n    \"name\": \"{{petNamePrev}}\"\r\n  },\r\n  \"name\": \"{{petNamePrev}}\",\r\n  \"photoUrls\": [\r\n    \"string\"\r\n  ],\r\n  \"tags\": [\r\n    {\r\n      \"id\": 0,\r\n      \"name\": \"{{petNamePrev}}\"\r\n    }\r\n  ],\r\n  \"status\": \"available\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}pet",
+									"host": [
+										"{{URL}}pet"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get new pet",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"validateOK200(pm);\r",
+											"validateNotNullName(pm.response);\r",
+											"checkName(pm.response);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"validateNotNullName = function (data) {    \r",
+											"    let jsonData = data.json();\r",
+											"    console.log(jsonData.username);\r",
+											"    \r",
+											"  \r",
+											"    pm.test(\"Nombre mascota no esta vacio\",() => {\r",
+											"         pm.expect(jsonData.name).not.eql(\"undefined\");\r",
+											"    });\r",
+											"}\r",
+											"\r",
+											"checkName = function (data) {    \r",
+											"    let jsonData = data.json();\r",
+											"    console.log(jsonData.username);\r",
+											"    \r",
+											"  \r",
+											"    pm.test(\"Nombre mascota no esta vacio\",() => {\r",
+											"         pm.expect(jsonData.name).to.eql(pm.variables.get(\"petNamePrev\"));\r",
+											"    });\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}pet/{{idPet}}",
+									"host": [
+										"{{URL}}pet"
+									],
+									"path": [
+										"{{idPet}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update pet",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"validateOK200(pm);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": {{idPet}},\r\n  \"category\": {\r\n    \"id\": 0,\r\n    \"name\": \"{{petName}}\"\r\n  },\r\n  \"name\": \"{{petName}}\",\r\n  \"photoUrls\": [\r\n    \"string\"\r\n  ],\r\n  \"tags\": [\r\n    {\r\n      \"id\": 0,\r\n      \"name\": \"{{petName}}\"\r\n    }\r\n  ],\r\n  \"status\": \"available\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}pet",
+									"host": [
+										"{{URL}}pet"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "2.2 - Delete pet",
+					"item": [
+						{
+							"name": "Delete pet",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"validateOK200(pm);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}pet/{{idPet}}",
+									"host": [
+										"{{URL}}pet"
+									],
+									"path": [
+										"{{idPet}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get deleted pet",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"validateOK200(pm);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"validateNotNullName = function (data) {    \r",
+											"    let jsonData = data.json();\r",
+											"    console.log(jsonData.username);\r",
+											"    \r",
+											"  \r",
+											"    pm.test(\"Nombre mascota no esta vacio\",() => {\r",
+											"         pm.expect(jsonData.name).not.eql(\"undefined\");\r",
+											"    });\r",
+											"}\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}pet/{{idPet}}",
+									"host": [
+										"{{URL}}pet"
+									],
+									"path": [
+										"{{idPet}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete deleted pet",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"validateOK200(pm);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}pet/{{idPet}}",
+									"host": [
+										"{{URL}}pet"
+									],
+									"path": [
+										"{{idPet}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.globals.set(\"idPet\", \"46\");",
+							"pm.globals.set(\"idPetCategoty\",\"5\");",
+							"pm.globals.set(\"petName\",\"Paco\");",
+							"pm.globals.set(\"petNamePrev\",\"Thor\");",
+							"",
+							"",
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "TC3 - Store tests",
+			"item": [
+				{
+					"name": "3.1 - Create Store order",
+					"item": [
+						{
+							"name": "Create order",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"validateOK200(pm);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": {{idStore}},\r\n  \"petId\": {{petId}},\r\n  \"quantity\": {{quantity}},\r\n  \"shipDate\": \"2023-05-30T14:34:12.410Z\",\r\n  \"status\": \"placed\",\r\n  \"complete\": true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}store/order",
+									"host": [
+										"{{URL}}store"
+									],
+									"path": [
+										"order"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get new order",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"validateOK200(pm);\r",
+											"validateNotNullQuantity(pm.response);\r",
+											"checkName(pm.response);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"validateNotNullQuantity = function (data) {    \r",
+											"    let jsonData = data.json();\r",
+											"    let quantity = jsonData.quantity.toString();\r",
+											"    //console.log(jsonData.username);\r",
+											"    \r",
+											"  \r",
+											"    pm.test(\"Cantidad de la orden no esta vacio\",() => {\r",
+											"         pm.expect(quantity).not.eql(\"undefined\");\r",
+											"    });\r",
+											"}\r",
+											"\r",
+											"checkName = function (data) {    \r",
+											"    let jsonData = data.json();\r",
+											"    console.log(jsonData.quantity);\r",
+											"    \r",
+											"  \r",
+											"    pm.test(\"Comprobación de la cantidad de la order\",() => {\r",
+											"         pm.expect(jsonData.quantity).to.be.eqls(parseInt(pm.variables.get(\"quantity\")));\r",
+											"    });\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}store/order/{{idStore}}",
+									"host": [
+										"{{URL}}store"
+									],
+									"path": [
+										"order",
+										"{{idStore}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "3.2 - Delete store order",
+					"item": [
+						{
+							"name": "Delete order",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"validateOK200(pm);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}store/order/{{idStore}}",
+									"host": [
+										"{{URL}}store"
+									],
+									"path": [
+										"order",
+										"{{idStore}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get deleted order",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"validateOK200(pm);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}store/order/{{idStore}}",
+									"host": [
+										"{{URL}}store"
+									],
+									"path": [
+										"order",
+										"{{idStore}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete deleted order",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"validateOK200(pm);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}store/order/{{idStore}}",
+									"host": [
+										"{{URL}}store"
+									],
+									"path": [
+										"order",
+										"{{idStore}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.globals.set(\"idStore\",\"55\");",
+							"pm.globals.set(\"petId\",\"60\");",
+							"pm.globals.set(\"quantity\",\"1\");",
+							"",
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"validateOK200 = function (pm) { pm.test(\"Status code is 200\", function () { pm.response.to.have.status(200); }); }",
+					"",
+					"validateOK201 = function (pm) { pm.test(\"Status code is 201\", function () { pm.response.to.have.status(201); }); }",
+					"",
+					"pm.collectionVariables.set(\"nombreUsuario\", \"pepe\");",
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "URL",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "nombreUsuario",
+			"value": ""
+		},
+		{
+			"key": "nombre",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "lastName",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "email",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "phone",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "password",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
