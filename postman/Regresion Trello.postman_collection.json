@@ -1,0 +1,820 @@
+{
+	"info": {
+		"_postman_id": "5a43da63-7249-4fea-8b4c-434151cd74a5",
+		"name": "Regresion Trello",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24773452"
+	},
+	"item": [
+		{
+			"name": "BoardTest",
+			"item": [
+				{
+					"name": "Get all boards",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test validate OK\", validateOK200(pm));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}members/me/boards?key={{key}}&token={{token}}",
+							"host": [
+								"{{URL}}members"
+							],
+							"path": [
+								"me",
+								"boards"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{key}}"
+								},
+								{
+									"key": "token",
+									"value": "{{token}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Board",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"pm.environment.set(\"boardID\",response.id);\r",
+									"\r",
+									"pm.test(\"Test validate OK\", validateOK200(pm));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}boards/?name={{boardName}}&key={{key}}&token={{token}}",
+							"host": [
+								"{{URL}}boards"
+							],
+							"path": [
+								""
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "{{boardName}}"
+								},
+								{
+									"key": "key",
+									"value": "{{key}}"
+								},
+								{
+									"key": "token",
+									"value": "{{token}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Board",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"validateLabelName = function (response){\r",
+									"    pm.expect(response.labelNames.green).to.equal(pm.environment.get(\"GreenLabelName\"));\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Validate OK 200\",validateOK200(pm));\r",
+									"\r",
+									"pm.test(\"Uppdate worked\",validateLabelName(response, \"boardName\"));\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}boards/{{boardID}}?key={{key}}&token={{token}}&labelNames/green={{GreenLabelName}}",
+							"host": [
+								"{{URL}}boards"
+							],
+							"path": [
+								"{{boardID}}"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{key}}"
+								},
+								{
+									"key": "token",
+									"value": "{{token}}"
+								},
+								{
+									"key": "labelNames/green",
+									"value": "{{GreenLabelName}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Board",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Validate OK 200\",validateOK200(pm.response.json()));\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/boards/{{boardID}}?key={{key}}&token={{token}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"boards",
+								"{{boardID}}"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{key}}"
+								},
+								{
+									"key": "token",
+									"value": "{{token}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TC1 - Creation",
+			"item": [
+				{
+					"name": "Create Board",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"pm.environment.set(\"boardID\",response.id);\r",
+									"\r",
+									"pm.test(\"Test validate OK\", validateOK200(pm));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}boards/?name={{boardName}}&key={{key}}&token={{token}}",
+							"host": [
+								"{{URL}}boards"
+							],
+							"path": [
+								""
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "{{boardName}}"
+								},
+								{
+									"key": "key",
+									"value": "{{key}}"
+								},
+								{
+									"key": "token",
+									"value": "{{token}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create List",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"const listId = response.id;\r",
+									"\r",
+									"pm.environment.set(\"listId\", listId);\r",
+									"\r",
+									"pm.test(\"Validate OK 200\", validateOK200(pm));\r",
+									"\r",
+									"pm.test(\"Check list to have the correct name\",validateName(response,\"listName\"));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}lists/?name={{listName}}&idBoard={{boardID}}&key={{key}}&token={{token}}",
+							"host": [
+								"{{URL}}lists"
+							],
+							"path": [
+								""
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "{{listName}}"
+								},
+								{
+									"key": "idBoard",
+									"value": "{{boardID}}"
+								},
+								{
+									"key": "key",
+									"value": "{{key}}"
+								},
+								{
+									"key": "token",
+									"value": "{{token}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create card",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"const cardId = response.id;\r",
+									"\r",
+									"pm.environment.set(\"cardId\", cardId);\r",
+									"\r",
+									"pm.test(\"Validate OK 200\", validateOK200(pm));\r",
+									"\r",
+									"pm.test(\"Check card to have the correct name\",validateName(response,\"cardName\"));\r",
+									"\r",
+									"pm.test(\"Check the card is on the right board\",validateCardBoard(response,\"boardID\"));\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}cards/?name={{cardName}}&idList={{listId}}&key={{key}}&token={{token}}",
+							"host": [
+								"{{URL}}cards"
+							],
+							"path": [
+								""
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "{{cardName}}"
+								},
+								{
+									"key": "idList",
+									"value": "{{listId}}"
+								},
+								{
+									"key": "key",
+									"value": "{{key}}"
+								},
+								{
+									"key": "token",
+									"value": "{{token}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Board",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"ValidateOK200\",validateOK200(pm));\r",
+									"\r",
+									"pm.test(\"Validate body is not empty\", responseNotEmpty(responseBody));\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/boards/{{boardID}}?key={{key}}&token={{token}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"boards",
+								"{{boardID}}"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{key}}"
+								},
+								{
+									"key": "token",
+									"value": "{{token}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get List",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Validate OK 200\", validateOK200(pm));\r",
+									"\r",
+									"pm.test(\"Check list to have the correct name\",validateName(response));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}lists/{{listId}}?key={{key}}&token={{token}}",
+							"host": [
+								"{{URL}}lists"
+							],
+							"path": [
+								"{{listId}}"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{key}}"
+								},
+								{
+									"key": "token",
+									"value": "{{token}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Card",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Validate OK 200\", validateOK200(pm));\r",
+									"\r",
+									"pm.test(\"Validate body is not empty\", responseNotEmpty(responseBody));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/cards/{{cardId}}?key={{key}}&token={{token}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"cards",
+								"{{cardId}}"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{key}}"
+								},
+								{
+									"key": "token",
+									"value": "{{token}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TC2 - Updates",
+			"item": [
+				{
+					"name": "Update Board",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"pm.environment.set(\"boardName\", response.name);\r",
+									"\r",
+									"pm.test(\"Validate OK 200\",validateOK200(pm));\r",
+									"\r",
+									"pm.test(\"Validate update worked\",validateName(response, \"newBoardName\"));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}boards/{{boardID}}?key={{key}}&token={{token}}&name={{newBoardName}}",
+							"host": [
+								"{{URL}}boards"
+							],
+							"path": [
+								"{{boardID}}"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{key}}"
+								},
+								{
+									"key": "token",
+									"value": "{{token}}"
+								},
+								{
+									"key": "name",
+									"value": "{{newBoardName}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Update Board ok",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Validate OK 200\",validateOK200(pm));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/boards/{{boardID}}?key={{key}}&token={{token}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"boards",
+								"{{boardID}}"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{key}}"
+								},
+								{
+									"key": "token",
+									"value": "{{token}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update List",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Validate OK 200\",validateOK200(pm));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}lists/{{listId}}?key={{key}}&token={{token}}",
+							"host": [
+								"{{URL}}lists"
+							],
+							"path": [
+								"{{listId}}"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{key}}"
+								},
+								{
+									"key": "token",
+									"value": "{{token}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Card",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Validate OK 200\",validateOK200(pm));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Updated Card\",\r\n  \"desc\": \"This card was updated by postman\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/cards/{{cardId}}?key={{key}}&token={{token}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"cards",
+								"{{cardId}}"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{key}}"
+								},
+								{
+									"key": "token",
+									"value": "{{token}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get update Card ok",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Validate OK 200\",validateOK200(pm));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/cards/{{cardId}}?key={{key}}&token={{token}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"cards",
+								"{{cardId}}"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{key}}"
+								},
+								{
+									"key": "token",
+									"value": "{{token}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TC3 - Delete",
+			"item": [
+				{
+					"name": "Delete Board",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Validate OK 200\",validateOK200(pm));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/boards/{{boardID}}?key={{key}}&token={{token}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"boards",
+								"{{boardID}}"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{key}}"
+								},
+								{
+									"key": "token",
+									"value": "{{token}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get deleted Board",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Validate the board is not there\",validate404NotFound(pm));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/boards/{{boardID}}?key={{key}}&token={{token}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"boards",
+								"{{boardID}}"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{key}}"
+								},
+								{
+									"key": "token",
+									"value": "{{token}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"validateOK200 = function (pm) { ",
+					"    pm.response.to.have.status(200);",
+					"}",
+					"responseNotEmpty = function (response){",
+					"    pm.expect(response.length).be.greaterThan(0);",
+					"}",
+					"validateName = function (response, variableName){",
+					"    pm.expect(response.name).to.eql(pm.environment.get(variableName));",
+					"}",
+					"validateCardBoard = function (response, variableName){",
+					"     pm.expect(response.idBoard).to.eql(pm.environment.get(variableName));",
+					"}",
+					"validate404NotFound = function (pm) { ",
+					"    pm.response.to.have.status(404);",
+					"}"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
